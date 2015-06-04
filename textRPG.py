@@ -592,7 +592,138 @@ def combat():
     # Call the encounter function as long as the PC and monster are still alive.
     while checkDead(sprite.mob,sprite.hero)==False:
         encounter(sprite.mob,sprite.hero)
-        
+
+##map building code##
+
+def room1():
+    print('- -\n'
+          '|@|\n'
+          '---')
+    print('you see a path to the north')
+    move1()
+def hall1():
+    print('|-|\n'
+          '| |\n'
+          '| |\n'
+          '| D\n'
+          '| |\n'
+          '|@|')
+    move2()
+def hall2():    
+    print('|-|\n'
+          '| |\n'
+          '| |\n'
+          '| D\n'
+          '|@|\n'
+          '| |')
+    move3()
+def hall3():
+    print('|-|\n'
+          '| |\n'
+          '| |\n'
+          '|@D\n'
+          '| |\n'
+          '| |')
+    print('You see a door to the east.')
+    move4()
+def hall4():
+    print('|-|\n'
+          '| |\n'
+          '|@|\n'
+          '| D\n'
+          '| |\n'
+          '| |')
+    move6()
+def hall5():
+    print('|-|\n'
+          '|@|\n'
+          '| |\n'
+          '| D\n'
+          '| |\n'
+          '| |')
+    move7()    
+def door1():
+    print('|-|\n'
+          '| |---\n'
+          '| | m |\n'
+          '|@ _  |\n'
+          '| |---|\n'
+          '| |')
+    print('You see a monster in the room!')
+    
+def room2():
+    print('|-|\n'
+          '| |---\n'
+          '| |   |\n'
+          '|  @m |\n'
+          '| |---|\n'
+          '| |')
+    
+def room3_3():
+    print('|-|\n'
+          '| |---\n'
+          '| |   |\n'
+          '|  @  |\n'
+          '| |---|\n'
+          '| |')
+    
+####end map building code####
+
+###Move on the map code###
+def move1():
+    move=input("Press N to move north.\n>>>")
+    if move=='n':
+        hall1()
+def move2():
+    move=input("Press N to move north.\n"
+               "Press S to move south.\n>>>")
+    if move=='n':
+        hall2()
+    if move =='s':
+        room1()
+def move3():
+    move=input("Press N to move north.\n"
+               "Press S to move south.\n>>>")
+    if move=='n':
+        hall3()
+    if move=='s':
+        hall1()
+def move4():
+    move=input("Press O to open the door\n"
+               "Press N to move north.\n"
+               "Press S to move south.\n>>>")    
+    if move =='o':
+        door1()
+        move5()
+    if move=='n':
+        hall4()        
+    if move=='s':
+        hall2()
+def move5():
+    move=input("Press E to move into the room.\n>>>")
+    if move =='e':
+        room2()
+        combat()
+        room3_3()
+def move6():
+    move=input("Press N to move north.\n"
+               "Press S to move south.\n>>>")
+    if move=='n':
+        hall5()
+    if move=='s':
+        hall3()
+def move7():
+    move=input("Press S to move south.\n>>>")
+    if move=='s':
+        hall4()
+
+###function parses through each function in move and prints map to console###        
+def maploop():
+    room1()
+    
+   
+###end map code###
+
 ####DICE#####
 D2=Die(2)
 D4=Die(4)
@@ -619,7 +750,9 @@ def gameLoop():
     # Call the function to see if the PC has increased in level.
     levelUp()
     # Call the function to start an encounter and conduct combat between the PC and monster.
-    combat()
+    #combat()
+    # Call the map function to loop through drawing the map and apply movement
+    maploop()
     # Loop back through itself until terminated by the user.
     gameLoop()
 
