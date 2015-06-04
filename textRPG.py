@@ -14,30 +14,6 @@ Notes: Camelcase is use for all function and variables names.
 All class objects are single word and capitalized.  Double quotes are
 used for all strings and comments.  Please utilize proper gramer for
 all comments for better readability.
-
-Making changes:
-    Please leave a separator before and after the change with comments on
-    what the change does.  Leave your name withing the comment as well.
-    For your first change, add your name to the list of authors above.
-    
-    I.E # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # This function tries to take over the world
-        # Matt Bigelow
-        def function:
-            code...
-        #print"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Codeskulptor URL:
-    Please do not create a new Codeskulpter URL.  Post the versioned URL based
-    on the original code posted.  This will allow others to review or fetch
-    the old code as needed.
-    
-Merging:
-    This will have to be done offline.  I recommend saving the version you are
-    working on and the any posted after one your last fetch to a local text
-    editor (i.e. Notepad, Notepad++, etc.).  Then compare the two using a tool
-    like TotalCommander.  Apply any changes and test the new code.  Post the
-    updated URL with the new version.
 """
 
 #imports
