@@ -18,6 +18,11 @@ all comments for better readability.
 #imports
 from random import randint
 
+# Enable debugging by setting to True.
+# To be used to print out variables and alter gameplay
+# to all for easier debugging.
+debug = False
+
 class Die:
     """
     Generate a random number in the range of the number of sides to the die.
@@ -829,8 +834,11 @@ def gameLoop():
     Main game function.
     The game will loop throught he below functions until the user quits.
     """
-    # Call the map function to loop through drawing the map and apply movement
-    maploop()
+    if not debug:
+        # Call the map function to loop through drawing the map and apply movement
+        maploop()
+    else:
+        combat()
     # Loop back through itself until terminated by the user.
     gameLoop()
 
