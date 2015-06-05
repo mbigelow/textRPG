@@ -7,7 +7,6 @@ TODO: more monsters
 TODO: better leveling
 TODO: monster leveling
 TODO: rest ability for all classes to heal small amount of hp
-TODO: improve 3D6 function
 TODO: improve debugging
 TODO: add comments to Mage class
 TODO: error handling for map functions
@@ -25,24 +24,31 @@ from random import randint
 # Enable debugging by setting to True.
 # To be used to print out variables and alter gameplay
 # to all for easier debugging.
-debug = False
+debug = True
 
 class Die:
     """
     Generate a random number in the range of the number of sides to the die.
     """
-    def __init__(self, sides=6):
+    def __init__(self, sides=6, numDie=1):
         """
-        Takes the number of sides to the die.
-        Defaults to 6.
+        Takes the number of sides and number of die.
+        Defaults to 6 side.
+        Defaults to 1 die.
         """
         self.sides = sides
+        self.numDie = numDie
         
     def roll(self):
         """
         Roll the die and get a random integer between one and the die maximum.
         """
-        return randint(1,self.sides)
+        x = 0
+        roll = 0
+        while(x < self.numDie):
+            x += 1
+            roll += randint(1,self.sides)
+        return roll
     
 class Character(object):
     """
@@ -195,7 +201,7 @@ class Cleric(Player):
         Can only heal self.
         """
         if sprite.hero.hp < sprite.hero.maxhp:
-            sprite.hero.hp += D8.roll()                
+            sprite.hero.hp += Die(8).roll()                
             if sprite.hero.hp > sprite.hero.maxhp:
                 sprite.hero.hp = sprite.hero.maxhp
             print "You now have: %s/%s hp"% (sprite.hero.hp,sprite.hero.maxhp)
@@ -285,14 +291,14 @@ class Mage(Player):
             sprite.hero.mana -= 1
             
         def magicMissile():
-            dam = D4.roll() * sprite.hero.mana
+            dam = Die(4).roll() * sprite.hero.mana
             sprite.mob.hp -= dam
             print "You use all your mana! and do",dam,"damage!"
             sprite.hero.mana -= sprite.hero.mana
             
         def fireball():
             print "You are temporarily blinded by a feiry flash of light."
-            dam = roll3D6()
+            dam = Die(6,3).roll()
             
             sprite.mob.hp -= dam
             print "You did",dam,"points of damage."            
@@ -441,7 +447,7 @@ def ranmob():
     """
     # A Goblin appears if a 1 is rolled.
     # An Orc appears if a 2 is rolled.
-    mob = Goblin() if D2.roll()<2 else Orc()
+    mob = Goblin() if Die(2).roll() < 2 else Orc()
     return mob
     
 def playerAttack():
@@ -451,7 +457,7 @@ def playerAttack():
     # Roll a twenty sided (D20) die.
     # A roll greater than the difference between the PC's THAC0 and the monster's AC equates to a hit.
     # Anything lower is a miss.
-    roll = D20.roll()   
+    roll = Die(20).roll()   
     if roll >= sprite.hero.thaco-sprite.mob.ac:
         print "You hit"
         # Roll the PC's attack die to determine damage.
@@ -471,7 +477,7 @@ def monsterAttack():
     # Roll a twenty sided (D20) die.
     # A roll greater than the difference between the monsters's THAC0 and the PC's AC equates to a hit.
     # Anything lower is a miss.
-    roll = D20.roll()   
+    roll = Die(20).roll()   
     if roll >= sprite.mob.thaco-sprite.hero.ac:
         print "The monster hit"
         # Roll the monster's attack die to determine damage.
@@ -535,18 +541,18 @@ def commands():
     # Pass the user command to the Class specific command list.
     if command:
         sprite.hero.COMMANDS[command][1]()
-        
-def roll3D6():
-    """
-    Roll three six sided die (D6).
-    Get the sum total for all die.
-    """
-    roll = 0
-    roll += D6.roll()
-    roll += D6.roll()
-    roll += D6.roll()
-    return roll
 
+
+#def roll3D6():
+#    """
+#    Roll three six sided die (D6).
+#    Get the sum total for all die.
+#    """
+#    roll = 0
+#    roll += D6.roll()
+#    roll += D6.roll()
+#    roll += D6.roll()
+#    return roll
     
 def  encounter(mob1,hero1):
     """
@@ -816,6 +822,7 @@ def maploop():
     """
     room1()
 
+"""
 # Dice with various sides to be used throughout the program.
 D2=Die(2)
 D4=Die(4)
@@ -825,6 +832,7 @@ D10=Die(10)
 D12=Die(12)
 D20=Die(20)
 D100=Die(100)
+"""
 
 class sprite:
     """
