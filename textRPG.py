@@ -5,9 +5,13 @@ Created by Mike Burgess
 TODO: better input interface
 TODO: more monsters
 TODO: better leveling
+TODO: monster leveling
 TODO: rest ability for all classes to heal small amount of hp
 TODO: improve 3D6 function
 TODO: improve debugging
+TODO: add comments to Mage class
+TODO: error handling for map functions
+TODO: treasure list and drop rate
 
 Notes: Camelcase is use for all function and variables names.
 All class objects are single word and capitalized.  Double quotes are
