@@ -12,7 +12,7 @@ TODO: improve debugging
 Notes: Camelcase is use for all function and variables names.
 All class objects are single word and capitalized.  Double quotes are
 used for all strings and comments.  Please utilize proper gramer for
-all comments for better readability.
+all comments for better readability.  
 """
 
 #imports
@@ -571,6 +571,8 @@ def checkDead(mob1,hero1):
         print "%s xp remaining until the next level."% (sprite.hero.next_level - sprite.hero.exp)
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         sprite.mob = ranmob()
+        # Call the function to see if the PC has increased in level.
+        levelUp()
         return True
     # Is the PC dead?
     if sprite.hero.hp <= 0:
@@ -827,8 +829,6 @@ def gameLoop():
     Main game function.
     The game will loop throught he below functions until the user quits.
     """
-    # Call the function to see if the PC has increased in level.
-    levelUp()
     # Call the map function to loop through drawing the map and apply movement
     maploop()
     # Loop back through itself until terminated by the user.
