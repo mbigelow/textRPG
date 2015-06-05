@@ -24,7 +24,7 @@ from random import randint
 # Enable debugging by setting to True.
 # To be used to print out variables and alter gameplay
 # to all for easier debugging.
-debug = True
+debug = False
 
 class Die:
     """
