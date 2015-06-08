@@ -33,7 +33,7 @@ debug = False
 tile = 20
 width = tile * 11
 height = tile * 15
-char_name = ""
+name = ""
 profession = ""
 
 # classes
@@ -652,11 +652,17 @@ def char_name(char_name):
     """
     Get the PC's name from the user.
     """ 
-    # char_name is used instead of name.
-
-    char_name = char_name
-    print "Welcome %s to the Interactive Python Text RPG!"% (char_name)
-    print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    # Only allow a single name per PC.
+    # char_name is local.
+    # name is global.
+    global name
+    if name == "":
+        name = char_name
+        print "Welcome %s to the Interactive Python Text RPG!"% (name)
+        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    else:
+        # A name for the PC has already been entered.
+        return
     
 def draw_handler(canvas):
     """
