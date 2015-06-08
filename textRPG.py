@@ -33,7 +33,7 @@ debug = False
 tile = 20
 width = tile * 11
 height = tile * 15
-pc_name = ""
+char_name = ""
 profession = ""
 
 # classes
@@ -94,7 +94,7 @@ class Player(Character):
         Fetch the PC's character sheet.
         Contains the character's current attributes.
         """
-        print "Name: %s Class: %s Level: %s HP: %s Thac0: %s AC:%s XP:%s"% (sprite.hero.char_name,sprite.hero.prof,sprite.hero.level,sprite.hero.hp,sprite.hero.thaco,sprite.hero.ac,sprite.hero.exp)
+        print "Name: %s Class: %s Level: %s HP: %s Thac0: %s AC:%s XP:%s"% (char_name,sprite.hero.prof,sprite.hero.level,sprite.hero.hp,sprite.hero.thaco,sprite.hero.ac,sprite.hero.exp)
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         # Call the class commands function after printing the character sheet.
         commands()
@@ -421,17 +421,17 @@ class Orc(Character):
 
 # functions and event handlers 
 
-def char_name(char_name):
+def pc_name(pc_name):
     """
     Get the PC's name from the user.
     """ 
     # Only allow a single name per PC.
-    # char_name is local.
-    # name is global.
-    global pc_name
-    if pc_name == "":
-        pc_name = char_name
-        print "Welcome %s to the Interactive Python Text RPG!"% (pc_name)
+    # pc_name is local.
+    # char_name is global.
+    global char_name
+    if char_name == "":
+        char_name = pc_name
+        print "Welcome %s to the Interactive Python Text RPG!"% (char_name)
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     else:
         # A name for the PC has already been entered.
@@ -488,6 +488,7 @@ def char_prof(char_prof):
     else:
         # The PC already has a choosen class
         return
+    sprite.hero = profession
     
 def ranmob():
     """
@@ -502,7 +503,7 @@ class sprite:
     """
     Main class object to generate the PC and monster.
     """
-    hero = profession
+    hero = ""
     mob = ranmob()    
     
 def playerAttack():
@@ -683,6 +684,9 @@ def move(key):
         player_pos[0] += tile
     elif key == simplegui.KEY_MAP["left"] and player_pos[0]> 0 + tile:
         player_pos[0] -= tile
+        
+    if key == simplegui.KEY_MAP["i"]:
+        print Player.sheet()
     
 # Main game function call
 #gameLoop()
@@ -694,7 +698,7 @@ player_pos = [tile * 5 + 10, tile * 14 + 10]
 frame.set_canvas_background("black")
 
 # register event handlers
-frame.add_input("Characters name", char_name, 100)
+frame.add_input("Characters name", pc_name, 100)
 frame.add_input("Characters class",char_prof, 100)
 frame.add_label(prof_label(), 150)
 frame.set_draw_handler(draw_handler)
