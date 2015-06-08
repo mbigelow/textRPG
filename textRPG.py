@@ -20,11 +20,19 @@ all comments for better readability.
 
 #imports
 from random import randint
+import simplegui
 
 # Enable debugging by setting to True.
 # To be used to print out variables and alter gameplay
 # to all for easier debugging.
 debug = False
+
+class sprite:
+    """
+    Main class object to generate the PC and monster.
+    """
+    hero = profession()
+    mob = ranmob()
 
 class Die:
     """
@@ -541,18 +549,6 @@ def commands():
     # Pass the user command to the Class specific command list.
     if command:
         sprite.hero.COMMANDS[command][1]()
-
-
-#def roll3D6():
-#    """
-#    Roll three six sided die (D6).
-#    Get the sum total for all die.
-#    """
-#    roll = 0
-#    roll += D6.roll()
-#    roll += D6.roll()
-#    roll += D6.roll()
-#    return roll
     
 def  encounter(mob1,hero1):
     """
@@ -821,25 +817,6 @@ def maploop():
     Begin the PCs movement through the map.
     """
     room1()
-
-"""
-# Dice with various sides to be used throughout the program.
-D2=Die(2)
-D4=Die(4)
-D6=Die(6)
-D8=Die(8)
-D10=Die(10)
-D12=Die(12)
-D20=Die(20)
-D100=Die(100)
-"""
-
-class sprite:
-    """
-    Main class object to generate the PC and monster.
-    """
-    hero = profession()
-    mob = ranmob()
 
 def gameLoop():
     """
