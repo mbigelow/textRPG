@@ -22,17 +22,20 @@ all comments for better readability.
 from random import randint
 import simplegui
 
+# globals
+
 # Enable debugging by setting to True.
 # To be used to print out variables and alter gameplay
 # to all for easier debugging.
 debug = False
 
-class sprite:
-    """
-    Main class object to generate the PC and monster.
-    """
-    hero = profession()
-    mob = ranmob()
+# ??
+tile = 20
+width = tile * 11
+height = tile * 15
+char_name = ""
+
+# classes
 
 class Die:
     """
@@ -80,11 +83,6 @@ class Player(Character):
     def __init__(self):
         pass
     
-    # Get the PC's name from the user.
-    # char_name is used instead of name.
-    char_name = input("What is your characters name?\n>>>")
-    print "Welcome %s to the Interactive Python Text RPG!"% (char_name)
-    print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     def fight():
         """
         Player attacks on the command 'f'.
@@ -422,6 +420,8 @@ class Orc(Character):
     # Die rolled to determine the damaage when the monster hits the PC.
     attackDie=6
 
+# functions and event handlers    
+    
 def profession():
     """
     PC class options are Fighter, Cleric, and Mage.
@@ -457,6 +457,13 @@ def ranmob():
     # An Orc appears if a 2 is rolled.
     mob = Goblin() if Die(2).roll() < 2 else Orc()
     return mob
+    
+class sprite:
+    """
+    Main class object to generate the PC and monster.
+    """
+    hero = profession()
+    mob = ranmob()    
     
 def playerAttack():
     """
@@ -606,230 +613,60 @@ def combat():
     while checkDead(sprite.mob,sprite.hero)==False:
         encounter(sprite.mob,sprite.hero)
 
-# Building the map
-def room1():
-    """
-    Prints the first room.
-    """
-    print('- -\n'
-          '|@|\n'
-          '---')
-    print('you see a path to the north')
-    move1()
-    
-def hall1():
-    """
-    Print the main hallway.
-    """
-    print('|-|\n'
-          '| |\n'
-          '| |\n'
-          '| D\n'
-          '| |\n'
-          '|@|')
-    move2()
-    
-def hall2(): 
-    """
-    The PC heads down the hall.
-    """
-    print('|-|\n'
-          '| |\n'
-          '| |\n'
-          '| D\n'
-          '|@|\n'
-          '| |')
-    move3()
-    
-def hall3():
-    """
-    The PC finds a door.
-    """
-    print('|-|\n'
-          '| |\n'
-          '| |\n'
-          '|@D\n'
-          '| |\n'
-          '| |')
-    print('You see a door to the east.')
-    move4()
-    
-def hall4():
-    """
-    The PC heads past the door.
-    """
-    print('|-|\n'
-          '| |\n'
-          '|@|\n'
-          '| D\n'
-          '| |\n'
-          '| |')
-    move6()
-    
-def hall5():
-    """
-    Print moving further down the hallway.
-    """
-    print('|-|\n'
-          '|@|\n'
-          '| |\n'
-          '| D\n'
-          '| |\n'
-          '| |')
-    move7()
-    
-def door1():
-    """
-    Print opening the door.
-    """
-    print('|-|\n'
-          '| |---\n'
-          '| | m |\n'
-          '|@ _  |\n'
-          '| |---|\n'
-          '| |')
-    print('You see a monster in the room!')
-    
-def room2():
-    """
-    Print the PC encount with the monster.
-    """
-    print('|-|\n'
-          '| |---\n'
-          '| |   |\n'
-          '|  @m |\n'
-          '| |---|\n'
-          '| |')
-    
-def room3_3():
-    """
-    Print the monster is vanquished.
-    """
-    print('|-|\n'
-          '| |---\n'
-          '| |   |\n'
-          '|  @  |\n'
-          '| |---|\n'
-          '| |')
-
-
-def move1():
-    """
-    The PC enters the dungeon.
-    The first move.
-    """
-    move = input("Press N to move north.\n>>>")
-    move = move.lower()
-    if move == "n":
-        hall1()
-    else:
-        print "That is not a valid direction."
-        move1()
-        
-def move2():
-    """
-    The second move.
-    Head north to go deeper into the dungeon.
-    Head south to retreat.
-    """
-    move = input("Press N to move north.\n"
-               "Press S to move south.\n>>>")
-    move = move.lower()
-    if move == "n":
-        hall2()
-    if move == "s":
-        room1()
-        
-def move3():
-    """
-    The thrid move.
-    Head north to go deeper into the dungeon.
-    Head south to retreat.
-    """
-    move = input("Press N to move north.\n"
-               "Press S to move south.\n>>>")
-    move = move.lower()
-    if move == "n":
-        hall3()
-    if move == "s":
-        hall1()
-        
-def move4():
-    """
-    The fourth move.
-    Head north to go deeper into the dungeon.
-    Open the door if you dare.
-    Head south to retreat.
-    """
-    move = input("Press O to open the door\n"
-               "Press N to move north.\n"
-               "Press S to move south.\n>>>")
-    move = move.lower()
-    if move == "o":
-        door1()
-        move5()
-    if move == "n":
-        hall4()        
-    if move == "s":
-        hall2()
-        
-def move5():
-    """
-    The fifth move.
-    Enter the room to fight the monster.
-    """
-    move = input("Press E to move into the room.\n>>>")
-    move = move.lower()
-    if move == "e":
-        room2()
-        combat()
-        room3_3()
-        
-def move6():
-    """
-    The sixth move.
-    Head north to go deeper into the dungeon.
-    Head south to retreat.
-    """
-    move = input("Press N to move north.\n"
-               "Press S to move south.\n>>>")
-    move = move.lower()
-    if move == "n":
-        hall5()
-    if move == "s":
-        hall3()
-        
-def move7():
-    """
-    The seventh move.
-    This is the end of the line.
-    Head south to retreat.
-    """
-    move = input("Press S to move south.\n>>>")
-    move = move.lower()
-    if move == "s":
-        hall4()
-    else:
-        gameLoop()
-        
-def maploop():
-    """
-    Begin the PCs movement through the map.
-    """
-    room1()
-
 def gameLoop():
     """
     Main game function.
     The game will loop throught he below functions until the user quits.
     """
-    if not debug:
-        # Call the map function to loop through drawing the map and apply movement
-        maploop()
-    else:
-        combat()
+    # Main combat
+    combat()
     # Loop back through itself until terminated by the user.
     gameLoop()
+    
+def char_name(char_name):
+    """
+    Get the PC's name from the user.
+    """ 
+    # char_name is used instead of name.
 
+    char_name = char_name
+    print "Welcome %s to the Interactive Python Text RPG!"% (char_name)
+    print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    
+def draw_handler(canvas):
+    """
+    Event handler to drawn the player on the canvas.
+    """
+    canvas.draw_image(player,(10,10),(tile,tile),player_pos,(tile,tile))
+    
+def move(key):
+    """
+    Event handler allow the player to move around the canvas.
+    """
+    global player_pos
+    
+    if key == simplegui.KEY_MAP['down'] and player_pos[1]<height-tile:
+        player_pos[1] += tile
+    elif key == simplegui.KEY_MAP['up'] and player_pos[1]>0+tile:
+        player_pos[1] -= tile
+    elif key == simplegui.KEY_MAP['right'] and player_pos[0]<width-tile:
+        player_pos[0] += tile
+    elif key == simplegui.KEY_MAP['left'] and player_pos[0]>0+tile:
+        player_pos[0] -= tile    
+    
 # Main game function call
-gameLoop()
+#gameLoop()
+
+# create frame
+frame = simplegui.create_frame("Text RPG",width,height)
+player = simplegui.load_image('http://6mlove.com/avatars/avatar-megaman.png')
+player_pos = [tile*5+10,tile*14+10]
+frame.set_canvas_background('black')
+
+# register event handlers
+frame.add_input("Characters name", char_name, 100)
+frame.set_draw_handler(draw_handler)
+frame.set_keydown_handler(move)
+
+# start frame
+frame.start()
