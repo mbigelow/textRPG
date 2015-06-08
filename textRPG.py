@@ -33,7 +33,7 @@ debug = False
 tile = 20
 width = tile * 11
 height = tile * 15
-name = ""
+pc_name = ""
 profession = ""
 
 # classes
@@ -55,10 +55,8 @@ class Die:
         """
         Roll the die and get a random integer between one and the die maximum.
         """
-        x = 0
         roll = 0
-        while(x < self.numDie):
-            x += 1
+        for die in range(self.numDie):
             roll += randint(1,self.sides)
         return roll
     
@@ -421,7 +419,23 @@ class Orc(Character):
     # Die rolled to determine the damaage when the monster hits the PC.
     attackDie=6
 
-# functions and event handlers    
+# functions and event handlers 
+
+def char_name(char_name):
+    """
+    Get the PC's name from the user.
+    """ 
+    # Only allow a single name per PC.
+    # char_name is local.
+    # name is global.
+    global pc_name
+    if pc_name == "":
+        pc_name = char_name
+        print "Welcome %s to the Interactive Python Text RPG!"% (pc_name)
+        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    else:
+        # A name for the PC has already been entered.
+        return
     
 def prof_label():
     """
@@ -452,6 +466,7 @@ def char_prof(char_prof):
         }
     
     # Only allow a single class per PC.
+    char_prof = char_prof.lower()
     if profession == "":
         # Get the class from the user.
         if char_prof == "f":
@@ -648,22 +663,6 @@ def gameLoop():
     # Loop back through itself until terminated by the user.
     gameLoop()
     
-def char_name(char_name):
-    """
-    Get the PC's name from the user.
-    """ 
-    # Only allow a single name per PC.
-    # char_name is local.
-    # name is global.
-    global name
-    if name == "":
-        name = char_name
-        print "Welcome %s to the Interactive Python Text RPG!"% (name)
-        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    else:
-        # A name for the PC has already been entered.
-        return
-    
 def draw_handler(canvas):
     """
     Event handler to drawn the player on the canvas.
@@ -676,14 +675,14 @@ def move(key):
     """
     global player_pos
     
-    if key == simplegui.KEY_MAP['down'] and player_pos[1]<height-tile:
+    if key == simplegui.KEY_MAP["down"] and player_pos[1] < height - tile:
         player_pos[1] += tile
-    elif key == simplegui.KEY_MAP['up'] and player_pos[1]>0+tile:
+    elif key == simplegui.KEY_MAP["up"] and player_pos[1] > 0 + tile:
         player_pos[1] -= tile
-    elif key == simplegui.KEY_MAP['right'] and player_pos[0]<width-tile:
+    elif key == simplegui.KEY_MAP["right"] and player_pos[0] < width - tile:
         player_pos[0] += tile
-    elif key == simplegui.KEY_MAP['left'] and player_pos[0]>0+tile:
-        player_pos[0] -= tile    
+    elif key == simplegui.KEY_MAP["left"] and player_pos[0]> 0 + tile:
+        player_pos[0] -= tile
     
 # Main game function call
 #gameLoop()
