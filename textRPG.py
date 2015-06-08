@@ -34,6 +34,7 @@ tile = 20
 width = tile * 11
 height = tile * 15
 char_name = ""
+profession = ""
 
 # classes
 
@@ -422,32 +423,56 @@ class Orc(Character):
 
 # functions and event handlers    
     
-def profession():
+def prof_label():
     """
-    PC class options are Fighter, Cleric, and Mage.
+    PC class options are Fighter, Cleric, and Mage.  Multi-line label.
     """
     choice = {
-        'f': Fighter,
-        'c': Cleric,
-        'm': Mage,
+        "f": Fighter,
+        "c": Cleric,
+        "m": Mage,
         }
-
-    print"What is your class?"    
+    
+    label = ""
     for letter in choice.keys():        
-        print"- Press %s for %s" % (letter, choice[letter].__name__)
-    print"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    # Get the class from the user.
-    pclass = input("What is your class?\n>>>")
-    pclass = pclass.lower()
-    if pclass in choice.keys():
-        print"You choose the %s class."% (choice[pclass].__name__)
-        print"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        return choice[pclass]()
+        label += "Enter \'%s\' for %s " % (letter, choice[letter].__name__)
+    return label
+    
+def char_prof(char_prof):
+    """
+    PC class options are Fighter, Cleric, and Mage.  Takes in a letter from the user.
+    Outputs the PC's choosen profession.
+    """
+    global profession
+    
+    choice = {
+        "f": Fighter,
+        "c": Cleric,
+        "m": Mage,
+        }
+    
+    # Only allow a single class per PC.
+    if profession == "":
+        # Get the class from the user.
+        if char_prof == "f":
+            print "You choose the %s class."% (choice[char_prof].__name__)
+            print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            profession = choice[char_prof]()
+        elif char_prof == "c":
+            print "You choose the %s class."% (choice[char_prof].__name__)
+            print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            profession = choice[char_prof]()
+        elif char_prof == "m":
+            key = "m"
+            print "You choose the %s class."% (choice[char_prof].__name__)
+            print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            profession = choice[char_prof]()
+        else:
+            print "You entered an invalid class."
+            return
     else:
-        # Defaults to the Fighter class if no input is given.
-        print"You choose the %s class."% (choice['f'].__name__)
-        print"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        return choice['f']()
+        # The PC already has a choosen class
+        return
     
 def ranmob():
     """
@@ -462,7 +487,7 @@ class sprite:
     """
     Main class object to generate the PC and monster.
     """
-    hero = profession()
+    hero = profession
     mob = ranmob()    
     
 def playerAttack():
@@ -659,12 +684,14 @@ def move(key):
 
 # create frame
 frame = simplegui.create_frame("Text RPG",width,height)
-player = simplegui.load_image('http://6mlove.com/avatars/avatar-megaman.png')
-player_pos = [tile*5+10,tile*14+10]
-frame.set_canvas_background('black')
+player = simplegui.load_image("http://6mlove.com/avatars/avatar-megaman.png")
+player_pos = [tile * 5 + 10, tile * 14 + 10]
+frame.set_canvas_background("black")
 
 # register event handlers
 frame.add_input("Characters name", char_name, 100)
+frame.add_input("Characters class",char_prof, 100)
+frame.add_label(prof_label(), 150)
 frame.set_draw_handler(draw_handler)
 frame.set_keydown_handler(move)
 
