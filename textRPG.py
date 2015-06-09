@@ -689,7 +689,7 @@ def player_action(key):
     elif key == simplegui.KEY_MAP["f"]:
         Player.fight()
     elif key == simplegui.KEY_MAP["i"]:
-        print Player.sheet()
+        Player.sheet()
     
 # Main game function call
 #gameLoop()
