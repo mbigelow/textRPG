@@ -8,9 +8,10 @@ TODO: better leveling
 TODO: monster leveling
 TODO: rest ability for all classes to heal small amount of hp
 TODO: improve debugging
-TODO: add comments to Mage class
-TODO: error handling for map functions
+TODO: add comments to Mage spells
+TODO: fix class specific commands
 TODO: treasure list and drop rate
+TODO: update and test Cleric and Mage
 
 Notes: Camelcase is use for all function and variables names.
 All class objects are single word and capitalized.  Double quotes are
@@ -29,10 +30,12 @@ import simplegui
 # to all for easier debugging.
 debug = False
 
-# ??
+# global variables used in drawing the canvas.
 tile = 20
 width = tile * 11
 height = tile * 15
+
+# globals for creation of the PC.
 char_name = ""
 profession = ""
 
@@ -96,7 +99,7 @@ class Player(Character):
         """
         print "Name: %s Class: %s Level: %s HP: %s Thac0: %s AC:%s XP:%s"% (char_name,sprite.hero.prof,sprite.hero.level,sprite.hero.hp,sprite.hero.thaco,sprite.hero.ac,sprite.hero.exp)
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        # Call the class commands function after printing the character sheet.
+#         Call the class commands function after printing the character sheet.
 #        commands()
        
 class Fighter(Player):
@@ -106,7 +109,7 @@ class Fighter(Player):
     Highest HP, melee attack, and defense
     """
     
-    # Class
+    # PC class
     prof = "fighter"
     # Maximum health points.
     # Starts at 10 for the fighter.
@@ -131,26 +134,26 @@ class Fighter(Player):
     # PC's defense is sprite.mob.thaco - sprite.hero.ac.
     ac = 10  
         
-    def fight():
-        """
-        Attack the enemy.
-        """
-        # Call the fight function in the Player class.
-        Player.fight()
-        
-    def sheet():
-        """
-        Retrieve the PC's character sheet.
-        """
-        # Call the sheet function in the Player class.
-        Player.sheet()
-    
-    # The fighter class commands available.
-    COMMANDS={
-        'f':('fight',fight),
-        'i':('info',sheet),
-        'q':('quit',quit),
-        }
+#    def fight():
+#        """
+#        Attack the enemy.
+#        """
+#        # Call the fight function in the Player class.
+#        Player.fight()
+#        
+#    def sheet():
+#        """
+#        Retrieve the PC's character sheet.
+#        """
+#        # Call the sheet function in the Player class.
+#        Player.sheet()
+#    
+#    # The fighter class commands available.
+#    COMMANDS={
+#        'f':('fight',fight),
+#        'i':('info',sheet),
+#        'q':('quit',quit),
+#        }
     
 class Cleric(Player):
     """
@@ -159,7 +162,7 @@ class Cleric(Player):
     Moderate HP and melee attack.
     """
     
-    # Class
+    # PC class
     prof = "cleric"
     # Maximum health points.
     # Starts at 8 for the cleric.
@@ -235,7 +238,7 @@ class Mage(Player):
     Master of the arcane.  Wields powerful magicks.
     """    
     
-    # Class
+    # PC class
     prof = "mage"
     # Resource for casting spells
     # Mage only
@@ -363,17 +366,17 @@ class Monster(Character):
     # Monster name.
     mob_name = "NAME"
     # Monster health points.
-    hp = 9999
+    hp = 1
     # Monster's offense is sprite.mob.thaco - sprite.hero.ac.
-    thaco = 9999
+    thaco = 10
     # Monster's defense is sprite.hero.thaco - sprite.mob.ac.
-    ac = 9999
+    ac = 10
     # Items that the creature could drop on death.
     inventory={}
     # Experience awarded to the PC for killing the monster.
     exp = 9999
     # Die rolled to determine the damaage when the monster hits the PC.
-    attackDie = 9999
+    attackDie = 2
     pass
 
 class Goblin(Character):
@@ -415,6 +418,7 @@ class Orc(Character):
     ac=6
     # Items that the creature could drop on death.
     inventory={}
+    # Experience awarded to the PC for killing the monster.
     exp=8
     # Die rolled to determine the damaage when the monster hits the PC.
     attackDie=6
@@ -496,7 +500,10 @@ def ranmob():
     """
     # A Goblin appears if a 1 is rolled.
     # An Orc appears if a 2 is rolled.
-    mob = Goblin() if Die(2).roll() < 2 else Orc()
+    if not debug:
+        mob = Goblin() if Die(2).roll() < 2 else Orc()
+    else:
+        mob = Monster()
     return mob
     
 class sprite:
@@ -514,11 +521,11 @@ def playerAttack():
     # A roll greater than the difference between the PC's THAC0 and the monster's AC equates to a hit.
     # Anything lower is a miss.
     roll = Die(20).roll()   
-    if roll >= sprite.hero.thaco-sprite.mob.ac:
+    if roll >= sprite.hero.thaco - sprite.mob.ac:
         print "You hit"
         # Roll the PC's attack die to determine damage.
         rollD = Die(sprite.hero.attackDie).roll()
-        print "for",rollD,"damage"
+        print "for", rollD, "damage"
         sprite.mob.hp -= rollD
         print "the",sprite.mob.mob_name,"has",sprite.mob.hp,"hp left"
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -534,11 +541,11 @@ def monsterAttack():
     # A roll greater than the difference between the monsters's THAC0 and the PC's AC equates to a hit.
     # Anything lower is a miss.
     roll = Die(20).roll()   
-    if roll >= sprite.mob.thaco-sprite.hero.ac:
+    if roll >= sprite.mob.thaco - sprite.hero.ac:
         print "The monster hit"
         # Roll the monster's attack die to determine damage.
         rollD = Die(sprite.mob.attackDie).roll()
-        print "for",rollD,"damage"
+        print "for", rollD, "damage"
         sprite.hero.hp -= rollD
         print char_name,"has",sprite.hero.hp,"hp left"
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -624,7 +631,7 @@ def checkDead(mob1,hero1):
     sprite.hero = hero1
     # Is the monster dead?
     if sprite.mob.hp <= 0:
-        print "The",sprite.mob.mob_name,"is dead!"     
+        print "The", sprite.mob.mob_name, "is dead!"     
         sprite.hero.exp += sprite.mob.exp        
         print sprite.hero.char_name + " gained %s xp"% (sprite.mob.exp)
         print "%s xp remaining until the next level."% (sprite.hero.next_level - sprite.hero.exp)
