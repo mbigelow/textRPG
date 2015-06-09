@@ -658,18 +658,18 @@ def combat():
     FIGHT!
     """
     # Call the encounter function as long as the PC and monster are still alive.
-    while checkDead(sprite.mob,sprite.hero)==False:
+    while not checkDead(sprite.mob,sprite.hero):
         encounter(sprite.mob,sprite.hero)
 
-def gameLoop():
-    """
-    Main game function.
-    The game will loop throught he below functions until the user quits.
-    """
-    # Main combat
-    combat()
-    # Loop back through itself until terminated by the user.
-    gameLoop()
+#def gameLoop():
+#    """
+#    Main game function.
+#    The game will loop throught he below functions until the user quits.
+#    """
+#    # Main combat
+#    combat()
+#    # Loop back through itself until terminated by the user.
+#    gameLoop()
     
 def draw_handler(canvas):
     """
