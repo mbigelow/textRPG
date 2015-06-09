@@ -540,7 +540,7 @@ def monsterAttack():
         rollD = Die(sprite.mob.attackDie).roll()
         print "for",rollD,"damage"
         sprite.hero.hp -= rollD
-        print sprite.hero.char_name,"has",sprite.hero.hp,"hp left"
+        print char_name,"has",sprite.hero.hp,"hp left"
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     else:
         print "Monster misses"
@@ -579,24 +579,24 @@ def levelUp():
             levelGain = False
             print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     
-def commands():
-    """
-    Get the users input on the command to execute.
-    """
-    for command, action in sprite.hero.COMMANDS.items():
-        print "Press %s to %s"% (command,action[0])
-    print "press Enter to skip"
-    while True:
-        print "~~~~~~~~~Press a key to Continue.~~~~~~~"
-        command = input("Choose a command.\n>>>")
-        command = command.lower()
-        if command and command not in sprite.hero.COMMANDS:
-            print "Not a valid command"
-            continue
-        break
-    # Pass the user command to the Class specific command list.
-    if command:
-        sprite.hero.COMMANDS[command][1]()
+#def commands():
+#    """
+#    Get the users input on the command to execute.
+#    """
+#    for command, action in sprite.hero.COMMANDS.items():
+#        print "Press %s to %s"% (command,action[0])
+#    print "press Enter to skip"
+#    while True:
+#        print "~~~~~~~~~Press a key to Continue.~~~~~~~"
+#        command = input("Choose a command.\n>>>")
+#        command = command.lower()
+#        if command and command not in sprite.hero.COMMANDS:
+#            print "Not a valid command"
+#            continue
+#        break
+#    # Pass the user command to the Class specific command list.
+#    if command:
+#        sprite.hero.COMMANDS[command][1]()
     
 def  encounter(mob1,hero1):
     """
@@ -606,11 +606,11 @@ def  encounter(mob1,hero1):
     """
     sprite.mob = mob1
     sprite.hero = hero1
-    print "%s encountered a wild %s."% (sprite.hero.char_name,sprite.mob.mob_name)
+    print "%s encountered a wild %s."% (char_name,sprite.mob.mob_name)
     print "The %s has %s hp."% (sprite.mob.mob_name,sprite.mob.hp)
     print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    if sprite.hero.hp > 0:
-        commands()
+#    if sprite.hero.hp > 0:
+#        commands()
     if sprite.mob.hp > 0:  
         monsterAttack()
           
@@ -637,10 +637,10 @@ def checkDead(mob1,hero1):
     if sprite.hero.hp <= 0:
         sprite.mob.exp += sprite.hero.exp
         print "mob xp:",sprite.mob.exp
-        print "Your hero",sprite.hero.char_name,"died!"
+        print "Your hero",char_name,"died!"
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        sprite.hero.char_name = input("What is your characters name?\n>>>")
-        sprite.hero = profession()
+#        sprite.hero.char_name = input("What is your characters name?\n>>>")
+#        sprite.hero = profession()
         #print "Name: %s HP: %s Thac0: %s AC:%s XP:%s"% (sprite.hero.char_name,sprite.hero.hp,sprite.hero.thaco,sprite.hero.ac,sprite.hero.exp)
         return True
     else:
@@ -669,6 +669,7 @@ def draw_handler(canvas):
     Event handler to drawn the player on the canvas.
     """
     canvas.draw_image(player,(10,10),(tile,tile),player_pos,(tile,tile))
+    canvas.draw_image(enemy,(10,10),(tile,tile),enemy_pos,(tile,tile))
     
 def player_action(key):
     """
@@ -685,11 +686,14 @@ def player_action(key):
         player_pos[0] += tile
     elif key == simplegui.KEY_MAP["left"] and player_pos[0]> 0 + tile:
         player_pos[0] -= tile
-    # PC command options: f - fight, i - PC sheet.
-    elif key == simplegui.KEY_MAP["f"]:
-        Player.fight()
+    # PC sheet - 'i'
     elif key == simplegui.KEY_MAP["i"]:
         Player.sheet()
+    
+    if player_pos == enemy_pos:
+        combat()
+        if key == simplegui.KEY_MAP["f"]:
+            Player.fight()
     
 # Main game function call
 #gameLoop()
@@ -698,6 +702,8 @@ def player_action(key):
 frame = simplegui.create_frame("Text RPG",width,height)
 player = simplegui.load_image("http://6mlove.com/avatars/avatar-megaman.png")
 player_pos = [tile * 5 + 10, tile * 14 + 10]
+enemy = simplegui.load_image("http://6mlove.com/avatars/avatar-koolaid.jpg")
+enemy_pos = [tile * 5 + 10, tile * 7 + 10]
 frame.set_canvas_background("black")
 
 # register event handlers
