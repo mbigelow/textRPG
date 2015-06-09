@@ -97,7 +97,7 @@ class Player(Character):
         print "Name: %s Class: %s Level: %s HP: %s Thac0: %s AC:%s XP:%s"% (char_name,sprite.hero.prof,sprite.hero.level,sprite.hero.hp,sprite.hero.thaco,sprite.hero.ac,sprite.hero.exp)
         print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         # Call the class commands function after printing the character sheet.
-        commands()
+#        commands()
        
 class Fighter(Player):
     """
@@ -676,6 +676,7 @@ def player_action(key):
     """
     global player_pos
     
+    # Move the PC around the canvas using the arrow keys.
     if key == simplegui.KEY_MAP["down"] and player_pos[1] < height - tile:
         player_pos[1] += tile
     elif key == simplegui.KEY_MAP["up"] and player_pos[1] > 0 + tile:
@@ -684,6 +685,7 @@ def player_action(key):
         player_pos[0] += tile
     elif key == simplegui.KEY_MAP["left"] and player_pos[0]> 0 + tile:
         player_pos[0] -= tile
+    # PC command options: f - fight, i - PC sheet.
     elif key == simplegui.KEY_MAP["f"]:
         Player.fight()
     elif key == simplegui.KEY_MAP["i"]:
