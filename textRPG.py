@@ -670,7 +670,7 @@ def draw_handler(canvas):
     """
     canvas.draw_image(player,(10,10),(tile,tile),player_pos,(tile,tile))
     
-def move(key):
+def player_action(key):
     """
     Event handler allow the player to move around the canvas.
     """
@@ -684,8 +684,9 @@ def move(key):
         player_pos[0] += tile
     elif key == simplegui.KEY_MAP["left"] and player_pos[0]> 0 + tile:
         player_pos[0] -= tile
-        
-    if key == simplegui.KEY_MAP["i"]:
+    elif key == simplegui.KEY_MAP["f"]:
+        Player.fight()
+    elif key == simplegui.KEY_MAP["i"]:
         print Player.sheet()
     
 # Main game function call
@@ -702,7 +703,7 @@ frame.add_input("Characters name", pc_name, 100)
 frame.add_input("Characters class",char_prof, 100)
 frame.add_label(prof_label(), 150)
 frame.set_draw_handler(draw_handler)
-frame.set_keydown_handler(move)
+frame.set_keydown_handler(player_action)
 
 # start frame
 frame.start()
